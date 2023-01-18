@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { TruckScoreModule } from 'src/truck-score/truck-score.module';
+import { TruckScoreModule } from '../truck-score/truck-score.module';
 import { TruckFactorController } from './truck-factor.controller';
 import { TruckFactor } from './truck-factor.entity';
 import { TruckFactorService } from './truck-factor.service';
