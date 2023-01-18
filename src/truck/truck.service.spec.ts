@@ -1,7 +1,7 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from '../app.module';
 import { TruckService } from './truck.service';
-
+import { lastValueFrom } from 'rxjs';
 describe.only('TruckService', () => {
   let truckService: TruckService;
 
@@ -12,9 +12,11 @@ describe.only('TruckService', () => {
   });
 
   it('should call findAll method ', async () => {
-    const trucks = await truckService.findAll();
+
+    let trucks = await truckService.findAll();
+    let trucksPromise = await lastValueFrom(trucks)
     const count = await truckService.count();
-    expect(trucks.length).toBe(count);
+    expect(trucksPromise.length).toBe(count);
   });
 
   it('should call findOne method with expected param', async () => {
