@@ -1,4 +1,5 @@
 import { Controller, Get, Param, Query } from '@nestjs/common';
+import { from } from 'rxjs';
 import { TruckScoreByIdDto } from './dtos/get-truck-score.dto';
 import { TruckScoreService } from './truck-score.service';
 

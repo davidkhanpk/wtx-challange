@@ -12,6 +12,7 @@ import { TruckScore } from '../truck-score/truck-score.entity';
 import { TruckScoreController } from '../truck-score/truck-score.controller';
 import { LocationEnum, Truck } from './truck.entity';
 import { EntityProperty } from 'typeorm-seeding/dist/types';
+import { Observable } from 'rxjs';
 
 type OutputCsvRow = {
   truck_id: number;

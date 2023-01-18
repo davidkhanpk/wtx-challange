@@ -1,12 +1,12 @@
 import { GenericService } from '../base.service';
 import { TruckFactor, TypeEnum } from './truck-factor.entity';
-import { Injectable, NotFoundException, UseFilters } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectRepository ,} from '@nestjs/typeorm';
-import { FindOneOptions, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
 import { getTruckFactorByFilterDto } from './dtos/get-truck-factor-by-filter.dto';
 import { TruckScore } from 'src/truck-score/truck-score.entity';
-import { TruckScoreService } from 'src/truck-score/truck-score.service';
-import { filter, map, Observable, from, toArray, lastValueFrom } from 'rxjs';
+import { TruckScoreService } from '../truck-score/truck-score.service';
+import { Observable, from, lastValueFrom } from 'rxjs';
 import { Truck } from 'src/truck/truck.entity';
 
 @Injectable()
@@ -53,8 +53,8 @@ export class TruckFactorService extends GenericService<TruckFactor> {
    * @returns * Returns the truck score on the base of truck factors.
   */
   async getTruckStoreByFilter(truckId: number, params: getTruckFactorByFilterDto): Promise<TruckScore> {
-    let truckScoreObservable = this.truckScoreService.findByTruckId(truckId, {})
-    const truckScore = await lastValueFrom(truckScoreObservable) // Observable to Promise
+    let truckScore = await this.truckScoreService.findByTruckId(truckId, {})
+    // const truckScore = await lastValueFrom(truckScoreObservable) // Observable to Promise
     const truckData = truckScore.truck_id as unknown as Truck; // truck data returned from truckScore
     console.log(truckData)
     const factors = await this.truckFactorRepository.findBy(params);

@@ -16,39 +16,38 @@ export class TruckScoreService extends GenericService<TruckScore> {
     super(truckScoreRepository)
   }
 
-  findOneByTruckId(
-    id: number,
+  findOne(
+    id: any,
     options: Omit<FindOneOptions<TruckScore>, 'where'> = {},
-  ): Observable<TruckScore> {
-    return from(this.truckScoreRepository.findOne({
+  ): Promise<TruckScore> {
+    return this.truckScoreRepository.findOne({
       where: {
         truck_id: id,
       },
       ...options,
-    }))
+    });
   }
 
-  findByTruckId(
+  async findByTruckId(
     id: number,
     { location }: TruckScoreByIdDto,
-  ): Observable<TruckScore> {
-    const truck = this.findOneByTruckId(id, { relations: ['truck_id'] })
+  ): Promise<TruckScore> {
+    const truck = await this.findOne(id, { relations: ['truck_id'] });
 
     if (!location) {
       return truck;
     }
 
-    return truck.pipe(map(truck => {
-      const { location: truckLocation } = truck.truck_id as unknown as Truck;
-      return {
-          ...truck,
-          score:
-            truck.score +
-            (location.toLocaleLowerCase() === truckLocation.toLocaleLowerCase()
-              ? 0.5
-              : 0),
-        };
-    }))
+    const { location: truckLocation } = truck.truck_id as unknown as Truck;
+
+    return {
+      ...truck,
+      score:
+        truck.score +
+        (location.toLocaleLowerCase() === truckLocation.toLocaleLowerCase()
+          ? 0.5
+          : 0),
+    };
   }
 
   async save({ truck_id, score }) {
