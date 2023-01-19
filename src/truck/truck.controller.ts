@@ -4,8 +4,14 @@ import { UpdatePriceDto } from './dtos/update-price-dto';
 import { Truck } from './truck.entity';
 import { TruckService } from './truck.service';
 import { Observable } from 'rxjs';
+import {
+  ApiOperation,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 
 @Controller('trucks')
+@ApiTags('Truck')
 export class TruckController {
   constructor(private readonly truckService: TruckService) {}
 

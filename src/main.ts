@@ -7,6 +7,7 @@ const fs = require('fs-extra');
 const tls = require('tls');
 import * as express from 'express';
 import { ExpressAdapter } from '@nestjs/platform-express';
+import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 
 async function bootstrap() {
   const server = express();
@@ -21,6 +22,16 @@ async function bootstrap() {
       transform: true,
     }),
   );
+
+  const config = new DocumentBuilder()
+    .setTitle('WTX Challenge')
+    .setDescription('WTX Challenge API description')
+    .setVersion('1.0')
+    .addTag('wtxchallenge')
+    .build();
+  const document = SwaggerModule.createDocument(app, config);
+  SwaggerModule.setup('api', app, document);
+
   if(process.env.NODE_ENV && process.env.NODE_ENV == 'production') {
     const httpsOptions = { // add httpd certificates for production
       key: fs.readFileSync(<string>process.env.key_path),
